@@ -25,6 +25,12 @@ dependencies:
   # File sharing
   share_plus: ^7.2.1
   path_provider: ^2.1.1
+  
+  # HTTP client and secure storage
+  http: ^1.2.0
+  flutter_secure_storage: ^9.0.0
+  device_info_plus: ^12.2.0
+  package_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:

@@ -55,4 +55,32 @@ class EmotionsRepo {
       whereArgs: [appBiosignalId],
     );
   }
+
+  /// Get unsynced emotions for a session
+  Future<List<Map<String, Object?>>> getUnsyncedForSession(
+      String sessionId) async {
+    return await db.rawQuery('''
+      SELECT e.id, e.app_biosignal_id, e.swip_score, e.phys_subscore, e.emo_subscore,
+             e.confidence, e.dominant_emotion, e.model_id
+      FROM dim_emotions e
+      INNER JOIN dim_App_biosignals b ON e.app_biosignal_id = b.app_biosignal_id
+      WHERE b.app_session_id = ? AND (e.synced_to_cloud = 0 OR e.synced_to_cloud IS NULL)
+      ORDER BY e.id ASC
+    ''', [sessionId]);
+  }
+
+  /// Mark emotions as synced
+  Future<void> markSynced(List<int> ids) async {
+    if (ids.isEmpty) return;
+    final now = DateTime.now().toUtc().toIso8601String();
+    final placeholders = ids.map((_) => '?').join(',');
+    await db.rawUpdate(
+      '''
+      UPDATE dim_emotions
+      SET synced_to_cloud = 1, synced_at = ?
+      WHERE id IN ($placeholders)
+      ''',
+      [now, ...ids],
+    );
+  }
 }
