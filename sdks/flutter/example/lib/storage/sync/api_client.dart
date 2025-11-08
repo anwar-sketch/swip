@@ -18,7 +18,7 @@ class SwipApiClient {
   final Duration timeout;
 
   SwipApiClient({
-    this.baseUrl = 'https://swip-dashboard-iota.vercel.app/api',
+    this.baseUrl = 'https://swip.synheart.io/api',
     this.apiKey,
     this.timeout = const Duration(seconds: 30),
   });
@@ -29,9 +29,7 @@ class SwipApiClient {
       throw Exception('API key is required');
     }
 
-    final url = Uri.parse('$baseUrl/v1/devices').replace(queryParameters: {
-      'app_id': 'com.example.swipExample',
-    });
+    final url = Uri.parse('$baseUrl/v1/devices');
 
     try {
       logSync('debug', 'HTTP POST', extra: {
@@ -44,8 +42,6 @@ class SwipApiClient {
             headers: {
               'Content-Type': 'application/json',
               'X-API-Key': apiKey!,
-              'x-swip-internal-key':
-                  'XBubff3f10ihWQXBuuCgfMsbff3f1036a57b935d6867bff3ihWQXBuuCg5d6867fg'
             },
             body: jsonEncode(payload.toJson()),
           )
@@ -88,9 +84,7 @@ class SwipApiClient {
       throw Exception('API key is required');
     }
 
-    final url = Uri.parse('$baseUrl/v1/app_sessions').replace(queryParameters: {
-      'app_id': 'com.example.swipExample',
-    });
+    final url = Uri.parse('$baseUrl/v1/app_sessions');
 
     try {
       logSync('debug', 'HTTP POST', extra: {
@@ -103,8 +97,6 @@ class SwipApiClient {
             headers: {
               'Content-Type': 'application/json',
               'X-API-Key': apiKey!,
-              'x-swip-internal-key':
-                  'XBubff3f10ihWQXBuuCgfMsbff3f1036a57b935d6867bff3ihWQXBuuCg5d6867fg'
             },
             body: jsonEncode(payload.toJson()),
           )
@@ -143,9 +135,7 @@ class SwipApiClient {
       throw Exception('API key is required');
     }
 
-    final url = Uri.parse('$baseUrl/v1/app_sessions').replace(queryParameters: {
-      'app_id': 'com.example.swipExample',
-    });
+    final url = Uri.parse('$baseUrl/v1/app_sessions');
 
     log('URL: $url');
 
@@ -160,8 +150,6 @@ class SwipApiClient {
             headers: {
               'Content-Type': 'application/json',
               'X-API-Key': apiKey!,
-              'x-swip-internal-key':
-                  'XBubff3f10ihWQXBuuCgfMsbff3f1036a57b935d6867bff3ihWQXBuuCg5d6867fg'
             },
             body: jsonEncode(record.toJson()),
           )
@@ -210,9 +198,7 @@ class SwipApiClient {
     }
 
     final url =
-        Uri.parse('$baseUrl/v1/app_biosignals').replace(queryParameters: {
-      'app_id': 'com.example.swipExample',
-    });
+        Uri.parse('$baseUrl/v1/app_biosignals');
 
     try {
       final body = biosignals.map((b) => b.toJson()).toList();
@@ -227,8 +213,6 @@ class SwipApiClient {
             headers: {
               'Content-Type': 'application/json',
               'X-API-Key': apiKey!,
-              'x-swip-internal-key':
-                  'XBubff3f10ihWQXBuuCgfMsbff3f1036a57b935d6867bff3ihWQXBuuCg5d6867fg'
             },
             body: jsonEncode(body),
           )
@@ -276,9 +260,7 @@ class SwipApiClient {
       return;
     }
 
-    final url = Uri.parse('$baseUrl/v1/emotions').replace(queryParameters: {
-      'app_id': 'com.example.swipExample',
-    });
+    final url = Uri.parse('$baseUrl/v1/emotions');
 
     try {
       final body = emotions.map((e) => e.toJson()).toList();
@@ -293,8 +275,6 @@ class SwipApiClient {
             headers: {
               'Content-Type': 'application/json',
               'X-API-Key': apiKey!,
-              'x-swip-internal-key':
-                  'XBubff3f10ihWQXBuuCgfMsbff3f1036a57b935d6867bff3ihWQXBuuCg5d6867fg'
             },
             body: jsonEncode(body),
           )
