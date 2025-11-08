@@ -40,7 +40,7 @@ class BiosignalRecord {
       'timestamp': timestamp,
       if (respiratoryRate != null) 'respiratory_rate': respiratoryRate,
       if (hrvSdnn != null) 'hrv_sdnn': hrvSdnn,
-      if (heartRate != null) 'heart_rate': heartRate,
+      if (heartRate != null) 'heart_rate': heartRate!.round(), // API requires integer
       if (accelerometer != null) 'accelerometer': accelerometer,
       if (temperature != null) 'temperature': temperature,
       if (bloodOxygenSaturation != null)

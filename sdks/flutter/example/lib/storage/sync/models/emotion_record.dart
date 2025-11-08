@@ -23,7 +23,7 @@ class EmotionRecord {
     return {
       'id': id,
       'app_biosignal_id': appBiosignalId,
-      if (swipScore != null) 'swip_score': swipScore,
+      'swip_score': swipScore, // Required by API - filtered out if null before sync
       if (physSubscore != null) 'phys_subscore': physSubscore,
       if (emoSubscore != null) 'emo_subscore': emoSubscore,
       'confidence': confidence,

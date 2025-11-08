@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:sqflite/sqflite.dart';
 
@@ -386,7 +385,29 @@ class SyncService {
       return;
     }
 
-    final records = rows.map((r) {
+    // Filter out emotions without swip_score (API requires it)
+    final rowsWithScores = rows.where((r) => r['swip_score'] != null).toList();
+    
+    if (rowsWithScores.isEmpty) {
+      logSync('debug', 'No emotions with scores to sync for session',
+          extra: {
+            'sessionId': sessionId,
+            'totalEmotions': rows.length,
+          });
+      return;
+    }
+
+    if (rowsWithScores.length < rows.length) {
+      logSync('debug', 'Filtered out emotions without scores',
+          extra: {
+            'sessionId': sessionId,
+            'totalEmotions': rows.length,
+            'emotionsWithScores': rowsWithScores.length,
+            'filteredOut': rows.length - rowsWithScores.length,
+          });
+    }
+
+    final records = rowsWithScores.map((r) {
       logSync('debug', 'Prepared emotion record', extra: {
         'id': r['id'],
         'appBiosignalId': r['app_biosignal_id'],

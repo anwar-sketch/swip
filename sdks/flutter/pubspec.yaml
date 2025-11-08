@@ -32,7 +32,7 @@ dependencies:
 
   # Synheart packages
   synheart_wear:
-  synheart_emotion:
+  synheart_emotion: ^0.2.0
   
   # SWIP Core
   swip_core:
