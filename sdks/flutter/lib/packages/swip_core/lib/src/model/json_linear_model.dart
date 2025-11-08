@@ -85,4 +85,10 @@ class JsonLinearModel implements OnDeviceModel {
       return 1.0 / (1.0 + exp(-m));
     }
   }
+  
+  @override
+  Future<void> dispose() {
+    // TODO: implement dispose
+    throw UnimplementedError();
+  }
 }

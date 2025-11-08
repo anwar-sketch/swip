@@ -1,6 +1,5 @@
-import 'package:swip_core/swip_core.dart';
+import 'package:swip_core/swip.dart';
 import 'package:synheart_emotion/synheart_emotion.dart';
-import 'package:synheart_wear/synheart_wear.dart';
 
 /// SWIP Session Configuration
 class SWIPSessionConfig {
@@ -10,6 +9,28 @@ class SWIPSessionConfig {
   const SWIPSessionConfig({
     required this.appId,
     this.metadata = const {},
+  });
+}
+
+/// Legacy SWIP Session Results (used by SynheartWearAdapter)
+/// @deprecated Use SwipSessionResults instead
+class SWIPSessionResults {
+  final String sessionId;
+  final Duration duration;
+  final double wellnessScore;
+  final double deltaHrv;
+  final double coherenceIndex;
+  final double stressRecoveryRate;
+  final String impactType;
+
+  const SWIPSessionResults({
+    required this.sessionId,
+    required this.duration,
+    required this.wellnessScore,
+    required this.deltaHrv,
+    required this.coherenceIndex,
+    required this.stressRecoveryRate,
+    required this.impactType,
   });
 }
 
@@ -39,9 +60,10 @@ class SwipSessionResults {
       };
     }
 
-    final avgScore = scores.map((s) => s.swipScore).reduce((a, b) => a + b) / scores.length;
+    final avgScore =
+        scores.map((s) => s.swipScore).reduce((a, b) => a + b) / scores.length;
     final dominantEmotion = _getMostFrequentEmotion();
-    
+
     return {
       'session_id': sessionId,
       'duration_seconds': endTime.difference(startTime).inSeconds,
@@ -55,25 +77,48 @@ class SwipSessionResults {
   /// Get most frequent emotion
   String _getMostFrequentEmotion() {
     if (scores.isEmpty) return 'Unknown';
-    
+
     final emotionCounts = <String, int>{};
     for (final score in scores) {
-      emotionCounts[score.dominantEmotion] = 
+      emotionCounts[score.dominantEmotion] =
           (emotionCounts[score.dominantEmotion] ?? 0) + 1;
     }
-    
+
     String mostFrequent = '';
     int maxCount = 0;
-    
+
     for (final entry in emotionCounts.entries) {
       if (entry.value > maxCount) {
         maxCount = entry.value;
         mostFrequent = entry.key;
       }
     }
-    
+
     return mostFrequent;
   }
+}
+
+/// HRV Measurement data structure
+class HRVMeasurement {
+  final double rmssd;
+  final double sdnn;
+  final double pnn50;
+  final double? lf;
+  final double? hf;
+  final double? lfHfRatio;
+  final DateTime timestamp;
+  final String quality;
+
+  const HRVMeasurement({
+    required this.rmssd,
+    required this.sdnn,
+    required this.pnn50,
+    this.lf,
+    this.hf,
+    this.lfHfRatio,
+    required this.timestamp,
+    required this.quality,
+  });
 }
 
 /// SWIP Metrics - Deprecated, use SwipScoreResult instead

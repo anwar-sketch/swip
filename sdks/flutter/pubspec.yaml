@@ -16,7 +16,6 @@ dependencies:
   json_annotation: ^4.8.1
   
   # Health and sensors
-  health: ^13.2.1
   sensors_plus: ^4.0.2
   
   # Permissions
@@ -33,9 +32,7 @@ dependencies:
 
   # Synheart packages
   synheart_wear:
-    path: ../../../synheart-wear/packages/synheart_wear
-  synheart_emotion:
-    path: ../../../synheart-emotion
+  synheart_emotion: ^0.2.0
   
   # SWIP Core
   swip_core:
