@@ -27,7 +27,7 @@ class SwipEngine {
     required double hr,
     required double hrv,
     required double motion,
-    required Map<String, double> emotionProbabilities,
+    required EmotionSnapshot emotion,
   }) {
     // Detect artifacts
     final hasArtifact = _detectArtifact(motion, hr, hrv);
@@ -37,7 +37,7 @@ class SwipEngine {
       hr: hr,
       hrv: hrv,
       motion: motion,
-      emotionProbabilities: emotionProbabilities,
+      emotion: emotion,
       baseline: baseline,
       modelId: config.modelId,
     );

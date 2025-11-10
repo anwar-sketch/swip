@@ -1,146 +1,120 @@
+import 'dart:math' as math;
+
 import '../src/models.dart';
 
-/// Emotion utilities as defined in the RFC
-class EmotionUtilities {
-  /// Utility values for each emotion class
-  static const Map<String, double> utilities = {
-    'Amused': 0.95,
-    'Calm': 0.85,
-    'Focused': 0.80,
-    'Neutral': 0.70,
-    'Stressed': 0.15,
-  };
-
-  /// Get utility for an emotion class
-  static double getUtility(String emotion) {
-    return utilities[emotion] ?? 0.5;
-  }
-}
-
-/// Physiological weights as defined in the RFC
+/// Physiological weights remain identical to SWIP-1.0.
 class PhysiologicalWeights {
   static const double hr = 0.45;
   static const double hrv = 0.35;
   static const double motion = 0.20;
 }
 
-/// Computes SWIP Score based on RFC specification
+/// Snapshot emitted by the Synheart Emotion RFC pipeline.
+class EmotionSnapshot {
+  final double arousalScore; // smoothed \tilde{A}_t in [0,1]
+  final String state; // Calm | Neutral | Stress | warming_up
+  final double confidence; // 1 - MAD_norm in [0,1]
+  final bool isWarmingUp;
+
+  const EmotionSnapshot({
+    required this.arousalScore,
+    required this.state,
+    required this.confidence,
+    required this.isWarmingUp,
+  });
+
+  String get normalisedState {
+    switch (state.toLowerCase()) {
+      case 'calm':
+        return 'Calm';
+      case 'stress':
+      case 'stressed':
+        return 'Stress';
+      case 'warming_up':
+        return 'warming_up';
+      default:
+        return 'Neutral';
+    }
+  }
+}
+
+/// SWIP score computation that consumes the new emotion snapshot but keeps the
+/// 0-100 wellness impact semantics.
 class SwipScoreComputation {
-  /// Compute physiological subscore
-  /// 
-  /// Formula: S_phys = w_HR * S_HR + w_HRV * S_HRV + w_M * S_M
-  /// Each S_i is baseline-normalized: S_i = 1 - |x_i - μ_i^base| / σ_i^base
   static double computePhysiologicalSubscore({
     required double hr,
     required double hrv,
     required double motion,
     required PhysiologicalBaseline baseline,
   }) {
-    // Normalize HR
-    final hrScore = 1.0 - ((hr - baseline.hrMean).abs() / baseline.hrStd).clamp(0.0, 1.0);
-    
-    // Normalize HRV
-    final hrvScore = 1.0 - ((hrv - baseline.hrvMean).abs() / baseline.hrvStd).clamp(0.0, 1.0);
-    
-    // Motion score (lower motion is better for HRV quality)
+    final hrStd = baseline.hrStd == 0.0 ? 1.0 : baseline.hrStd;
+    final hrvStd = baseline.hrvStd == 0.0 ? 1.0 : baseline.hrvStd;
+
+    final hrScore = 1.0 - ((hr - baseline.hrMean).abs() / hrStd).clamp(0.0, 1.0);
+    final hrvScore = 1.0 - ((hrv - baseline.hrvMean).abs() / hrvStd).clamp(0.0, 1.0);
     final motionScore = (1.0 - (motion / 2.0).clamp(0.0, 1.0));
-    
-    // Weighted combination
-    final physScore = 
+
+    final physScore =
         PhysiologicalWeights.hr * hrScore +
         PhysiologicalWeights.hrv * hrvScore +
         PhysiologicalWeights.motion * motionScore;
-    
+
     return physScore.clamp(0.0, 1.0);
   }
 
-  /// Compute emotion subscore
-  /// 
-  /// Formula: S_emo = Σ(p_i * u_i)
-  static double computeEmotionSubscore(Map<String, double> emotionProbabilities) {
-    double emoScore = 0.0;
-    
-    for (final entry in emotionProbabilities.entries) {
-      final utility = EmotionUtilities.getUtility(entry.key);
-      emoScore += entry.value * utility;
+  static double computeEmotionSubscore(EmotionSnapshot snapshot) {
+    final arousal = snapshot.arousalScore.clamp(0.0, 1.0);
+    switch (snapshot.normalisedState) {
+      case 'Calm':
+        return math.max(arousal, 0.8);
+      case 'Stress':
+        return math.min(arousal, 0.3);
+      case 'warming_up':
+        return arousal * 0.5;
+      default:
+        return arousal;
     }
-    
-    return emoScore;
   }
 
-  /// Compute confidence from emotion probabilities
-  /// 
-  /// Formula: C = (p_max - p_2) / (1 - 1/K)
-  static double computeConfidence(Map<String, double> emotionProbabilities) {
-    if (emotionProbabilities.isEmpty) return 0.0;
-    
-    final sortedProbs = emotionProbabilities.values.toList()..sort((a, b) => b.compareTo(a));
-    final K = emotionProbabilities.length;
-    
-    final pMax = sortedProbs[0];
-    final p2 = sortedProbs.length > 1 ? sortedProbs[1] : 0.0;
-    
-    final confidence = (pMax - p2) / (1.0 - 1.0 / K);
-    return confidence.clamp(0.0, 1.0);
-  }
-
-  /// Find dominant emotion
-  static String findDominantEmotion(Map<String, double> emotionProbabilities) {
-    if (emotionProbabilities.isEmpty) return 'Neutral';
-    
-    String dominant = '';
-    double maxProb = 0.0;
-    
-    for (final entry in emotionProbabilities.entries) {
-      if (entry.value > maxProb) {
-        maxProb = entry.value;
-        dominant = entry.key;
-      }
+  static double computeConfidence(EmotionSnapshot snapshot) {
+    if (snapshot.isWarmingUp) {
+      return 0.0;
     }
-    
-    return dominant;
+    return snapshot.confidence.clamp(0.0, 1.0);
   }
 
-  /// Compute full SWIP Score
-  /// 
-  /// Formula: SWIP = β * S_emo + (1-β) * S_phys
-  /// where β = min(0.6, C)
-  /// Then: SWIP_100 = 100 * SWIP
+  static String _dominantEmotion(EmotionSnapshot snapshot) {
+    final state = snapshot.normalisedState;
+    if (state == 'warming_up') {
+      return 'Neutral';
+    }
+    return state;
+  }
+
   static SwipScoreResult computeSwipScore({
     required double hr,
     required double hrv,
     required double motion,
-    required Map<String, double> emotionProbabilities,
+    required EmotionSnapshot emotion,
     required PhysiologicalBaseline baseline,
     required String modelId,
     DateTime? timestamp,
   }) {
-    // Compute subscores
     final physScore = computePhysiologicalSubscore(
       hr: hr,
       hrv: hrv,
       motion: motion,
       baseline: baseline,
     );
-    
-    final emoScore = computeEmotionSubscore(emotionProbabilities);
-    
-    // Compute confidence
-    final confidence = computeConfidence(emotionProbabilities);
-    
-    // Compute fusion weight β
-    final beta = (0.6 * confidence).clamp(0.0, 0.6);
-    
-    // Fuse subscores
+
+    final emoScore = computeEmotionSubscore(emotion);
+    final confidence = computeConfidence(emotion);
+    final beta = math.min(0.6, confidence);
+
     final swipRaw = beta * emoScore + (1.0 - beta) * physScore;
-    
-    // Convert to 0-100 scale
     final swipScore = (swipRaw * 100).clamp(0.0, 100.0);
-    
-    // Find dominant emotion
-    final dominantEmotion = findDominantEmotion(emotionProbabilities);
-    
-    // Build reasons
+    final dominantEmotion = _dominantEmotion(emotion);
+
     final reasons = {
       'hr': hr,
       'hrv': hrv,
@@ -148,29 +122,30 @@ class SwipScoreComputation {
       'phys_contribution': physScore,
       'emo_contribution': emoScore,
       'beta': beta,
+      'emotion_confidence': confidence,
+      'arousal_score': emotion.arousalScore.clamp(0.0, 1.0),
     };
-    
+
     return SwipScoreResult(
       swipScore: swipScore,
       physSubscore: physScore,
       emoSubscore: emoScore,
       confidence: confidence,
       dominantEmotion: dominantEmotion,
-      emotionProbabilities: emotionProbabilities,
+      emotionProbabilities: {
+        dominantEmotion: 1.0,
+        'Arousal': emotion.arousalScore.clamp(0.0, 1.0),
+      },
       timestamp: timestamp ?? DateTime.now().toUtc(),
       modelId: modelId,
       reasons: reasons,
     );
   }
 
-  /// Apply exponential smoothing to a series of scores
-  /// 
-  /// Formula: smoothed = λ * current + (1 - λ) * previous
   static double smoothScore(double current, double previous, {double lambda = 0.9}) {
     return lambda * current + (1.0 - lambda) * previous;
   }
 
-  /// Interpret SWIP Score according to RFC ranges
   static String interpretScore(double swipScore) {
     if (swipScore >= 80.0) {
       return 'Positive';
