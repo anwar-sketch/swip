@@ -292,7 +292,7 @@ class SwipSdkManager {
           hr: hr,
           hrv: hrv,
           motion: motion,
-          emotionProbabilities: latestEmotion.probabilities,
+          emotion: _buildEmotionSnapshot(latestEmotion),
         );
 
         // Store and emit score
@@ -432,6 +432,51 @@ class SwipSdkManager {
     _scoreStreamController.close();
     _emotionStreamController.close();
     _wear.dispose();
+  }
+
+  EmotionSnapshot _buildEmotionSnapshot(EmotionResult result) {
+    final probabilities = result.probabilities;
+    final stressProb = probabilities['Stress'] ??
+        probabilities['Stressed'] ??
+        probabilities['stress'] ??
+        0.0;
+    final calmProb = probabilities['Calm'] ??
+        probabilities['calm'] ??
+        probabilities['Relaxed'] ??
+        0.0;
+    double arousal = stressProb;
+    if (arousal <= 0.0 && probabilities.isNotEmpty) {
+      arousal = 1.0 - calmProb;
+    }
+    if (arousal <= 0.0) {
+      arousal = result.confidence;
+    }
+    arousal = arousal.clamp(0.0, 1.0);
+
+    final state = _mapEmotionState(result.emotion);
+    final confidence = result.confidence.clamp(0.0, 1.0);
+    final isWarmingUp = probabilities.isEmpty;
+
+    return EmotionSnapshot(
+      arousalScore: arousal,
+      state: state,
+      confidence: confidence,
+      isWarmingUp: isWarmingUp,
+    );
+  }
+
+  String _mapEmotionState(String label) {
+    switch (label.toLowerCase()) {
+      case 'calm':
+      case 'relaxed':
+        return 'Calm';
+      case 'stress':
+      case 'stressed':
+      case 'anxious':
+        return 'Stress';
+      default:
+        return 'Neutral';
+    }
   }
 }
 
