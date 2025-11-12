@@ -17,7 +17,7 @@ export 'src/manager.dart' show SWIPManager;
 export 'src/synheart_wear_adapter.dart';
 
 // Re-export swip_core types
-export 'package:swip_core/swip.dart'
+export 'package:swip_core/swip_core.dart'
     show
         SwipScoreResult,
         PhysiologicalBaseline,
@@ -35,4 +35,4 @@ export 'src/ml/feature_extractor.dart';
 export 'src/ml/svm_predictor.dart';
 export 'src/ml/emotion_recognition_model.dart';
 export 'src/ml/emotion_recognition_controller.dart'
-    show EmotionRecognitionController, EmotionRecognitionConfig, EmotionState;
+    show EmotionRecognitionController;

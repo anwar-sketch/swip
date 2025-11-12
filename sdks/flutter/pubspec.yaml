@@ -1,6 +1,8 @@
 name: swip
 description: Synheart Wellness Impact Protocol - Flutter SDK
-version: 1.0.0+1
+version: 1.0.0+3
+homepage: https://github.com/synheart-ai/
+repository: https://github.com/synheart-ai/swip
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -31,12 +33,11 @@ dependencies:
   # flutter_onnxruntime: ^1.192.0
 
   # Synheart packages
-  synheart_wear:
+  synheart_wear: ^0.1.2
   synheart_emotion: ^0.2.0
   
   # SWIP Core
-  swip_core:
-    path: lib/packages/swip_core
+  swip_core: ^0.1.0+2
 
 dev_dependencies:
   flutter_test:

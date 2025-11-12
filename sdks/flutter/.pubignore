@@ -1,0 +1,25 @@
+# Files to exclude from pub.dev publishing
+.DS_Store
+**/.DS_Store
+pubspec.lock
+build/
+**/build/
+example/
+**/example/
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# OS files
+Thumbs.db
+ehthumbs.db
+
+# Generated files
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+
