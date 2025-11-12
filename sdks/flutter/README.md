@@ -16,15 +16,41 @@ Add the dependency to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  swip:
-    path: ../../../swip/sdks/flutter
+  swip: ^1.0.0
   
-  # SWIP dependencies
-  synheart_wear:
-    path: ../../../synheart-wear/packages/synheart_wear
-  synheart_emotion:
-    path: ../../../synheart-emotion
+  # SWIP dependencies (required)
+  synheart_wear: ^0.1.2
+  synheart_emotion: ^0.2.0
+  swip_core: ^0.1.0
 ```
+
+Then run:
+
+```bash
+flutter pub get
+```
+
+**Note:** The SWIP SDK depends on `synheart_wear`, `synheart_emotion`, and `swip_core` packages. These will be automatically installed when you add `swip` to your dependencies.
+
+## Platform-Specific Setup
+
+### iOS
+
+The SWIP SDK requires HealthKit permissions to access heart rate and heart rate variability data from connected wearables. Add the following keys to your `ios/Runner/Info.plist` file:
+
+```xml
+<key>NSHealthShareUsageDescription</key>
+<string>This app needs access to your health data to provide wellness insights and track your biometric metrics.</string>
+
+<key>NSHealthUpdateUsageDescription</key>
+<string>This app needs access to update your health data for comprehensive wellness tracking.</string>
+```
+
+**Note:** Customize the description strings to match your app's purpose. These strings are shown to users when requesting HealthKit permissions.
+
+### Android
+
+For Android, the SDK uses the Health Services API. Ensure your app has the necessary permissions declared in `android/app/src/main/AndroidManifest.xml`. The required permissions are typically handled by the `synheart_wear` package.
 
 ## Quick Start
 
@@ -373,10 +399,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
 ## Requirements
 
-- Flutter SDK >=3.0.0
+- Flutter SDK >=3.10.0
+- Dart SDK >=3.0.0 <4.0.0
 - iOS 13+ or Android API 24+
 - Compatible wearable device (Apple Watch, Fitbit, Garmin, etc.)
-- Health permissions granted
+- Health permissions granted (see Platform-Specific Setup above)
 
 ## License
 
