@@ -1,83 +1,81 @@
+# ===========================================
+# OS Files
+# ===========================================
 # macOS
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
+
+# Windows
 ehthumbs.db
 Thumbs.db
 
-# IDE and Editor files
-.vscode/
+# ===========================================
+# IDE and Editor Files
+# ===========================================
+# IntelliJ IDEA / Android Studio
 .idea/
-*.swp
-*.swo
-*~
-.project
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+local.properties
+*.classpath
+*.project
 .settings/
-.classpath
 
-# Logs
-*.log
-logs/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# VS Code
+.vscode/
+*.code-workspace
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
+# Eclipse
+.metadata/
+*.pydevproject
+.buildpath
 
-# Coverage directory used by tools like istanbul
-coverage/
-*.lcov
+# NetBeans
+nbproject/
+nb-configuration.xml
 
-# nyc test coverage
-.nyc_output
-
-# Dependency directories
-node_modules/
-**/jspm_packages/
-# Note: packages/ directories are intentionally tracked for swip_core
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# dotenv environment variables file
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# ===========================================
 # Flutter/Dart
+# ===========================================
+# Files and directories created by pub
 .dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
 .packages
 .pub-cache/
 .pub/
-build/
+pubspec.lock
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.flutter-plugins
+.flutter-plugins-dependencies
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/.pub/
+
+# Build artifacts
+**/build/
+*.dart.js
+*.js_
+*.js.deps
+*.js.map
+.buildlog
+
+# Flutter generated files
 flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
 
+# ===========================================
 # Android
+# ===========================================
 *.apk
 *.aab
 *.dex
@@ -87,13 +85,14 @@ gen/
 out/
 .gradle/
 local.properties
-*.iml
 *.hprof
 .cxx/
 *.keystore
 !debug.keystore
 
+# ===========================================
 # iOS
+# ===========================================
 *.ipa
 *.dSYM.zip
 *.dSYM
@@ -111,140 +110,73 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 *.xcuserstate
-ios/.generated/
-ios/Flutter/App.framework
-ios/Flutter/Flutter.framework
-ios/Flutter/Flutter.podspec
-ios/Flutter/Generated.xcconfig
-ios/Flutter/app.flx
-ios/Flutter/app.zip
-ios/Flutter/flutter_assets/
-ios/Flutter/flutter_export_environment.sh
-ios/ServiceDefinitions.json
-ios/Runner/GeneratedPluginRegistrant.*
 
-# Local database exports (example app)
-sdks/flutter/example/**/*.db
+# iOS Flutter (recursive for nested directories)
+**/ios/.generated/
+**/ios/.symlinks/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Podfile.lock
 
-# React Native
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
+# ===========================================
+# macOS Flutter
+# ===========================================
+**/macos/**/Pods/
+**/macos/**/.symlinks/
+**/macos/**/Flutter/ephemeral/
+**/macos/**/Flutter/Flutter-Generated.xcconfig
+**/macos/**/Flutter/Flutter.podspec
+**/macos/Podfile.lock
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-# Python-specific lib directories (not Flutter lib/)
-# lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-*.manifest
-*.spec
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-.mypy_cache/
-.dmypy.json
-dmypy.json
-.pyre/
+# ===========================================
+# Coverage
+# ===========================================
+coverage/
+*.lcov
+**/test/.test_coverage.dart
 
-# Virtual environments
-venv/
-env/
-ENV/
-env.bak/
-venv.bak/
+# ===========================================
+# Logs
+# ===========================================
+*.log
+logs/
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# ===========================================
+# Environment Variables
+# ===========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# IPython
-profile_default/
-ipython_config.py
-
-# AWS
-.aws/
-amplify/
-amplify/backend/awscloudformation/
-amplify/backend/.temp/
-amplify/#current-cloud-backend/
-amplify/.config/local-*
-amplify/logs/
-amplify/mock-data/
-amplify/backend/amplify-meta.json
-amplify/backend/awscloudformation/
-amplify/backend/.temp/
-build/
-dist/
-node_modules/
-aws-exports.js
-awsconfiguration.json
-amplifyconfiguration.json
-amplifyconfiguration.dart
-amplify-build-config.json
-amplify-gradle-config.json
-amplifytools.xcconfig
-.secret-*
-*.pem
-*.key
-
-# Terraform
-*.tfstate
-*.tfstate.*
-.terraform/
-.terraform.lock.hcl
-terraform.tfvars
-terraform.tfvars.json
-*.tfplan
-
-# Docker
-.dockerignore
-docker-compose.override.yml
-
-# Temporary files
+# ===========================================
+# Temporary Files
+# ===========================================
 tmp/
 temp/
 *.tmp
 *.temp
-
-# OS generated files
 *.swp
 *.swo
 *~
+*.bak
+*.backup
+*.old
+*.orig
 
-# SWIP specific
+# ===========================================
+# SWIP Specific
+# ===========================================
 swip-config.json
 swip-keys.json
 *.swip
@@ -253,20 +185,27 @@ session-data/
 wellness-reports/
 certification-data/
 
-# Test data
+# ===========================================
+# Test Data
+# ===========================================
 test-data/
 sample-data/
 mock-data/
 
-# Documentation build
+# ===========================================
+# Documentation Build
+# ===========================================
 docs/_build/
 docs/build/
 site/
 _site/
 
-# Backup files
-*.bak
-*.backup
-*.old
-*.orig
+# ===========================================
+# Local Database Exports (example app)
+# ===========================================
+sdks/flutter/example/**/*.db
+
+# ===========================================
+# Other
+# ===========================================
 CLAUDE.md
