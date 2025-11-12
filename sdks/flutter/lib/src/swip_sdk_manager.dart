@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
-import 'package:swip_core/swip.dart';
+import 'package:swip_core/swip_core.dart';
 import 'package:synheart_wear/synheart_wear.dart';
 import 'package:synheart_emotion/synheart_emotion.dart';
 import 'models.dart';

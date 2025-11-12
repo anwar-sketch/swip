@@ -1,4 +1,4 @@
-import 'package:swip_core/swip.dart';
+import 'package:swip_core/swip_core.dart';
 import 'package:synheart_emotion/synheart_emotion.dart';
 
 /// SWIP Session Configuration
