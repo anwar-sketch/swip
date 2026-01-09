@@ -1,0 +1,218 @@
+# ===========================================
+# Flutter SDK Package .gitignore
+# ===========================================
+# This .gitignore follows Flutter SDK best practices
+# for packages with example apps
+
+# ===========================================
+# OS Files
+# ===========================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ===========================================
+# IDE and Editor Files
+# ===========================================
+# IntelliJ IDEA / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+local.properties
+*.classpath
+*.project
+.settings/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Eclipse
+.metadata/
+*.pydevproject
+.buildpath
+
+# ===========================================
+# Flutter/Dart/Pub related
+# ===========================================
+# Files and directories created by pub
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+**/.dart_tool/
+**/.packages
+**/.pub/
+
+# Flutter generated files
+.flutter-plugins
+.flutter-plugins-dependencies
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+
+# Build artifacts
+**/build/
+*.dart.js
+*.js_
+*.js.deps
+*.js.map
+.buildlog
+
+# Coverage
+**/coverage/
+*.lcov
+
+# ===========================================
+# Example App - Generated Files
+# ===========================================
+# These should be ignored but may be tracked
+# Remove them from git if they're already tracked
+
+# iOS Generated Files
+example/ios/.symlinks/
+example/ios/.generated/
+example/ios/Flutter/Generated.xcconfig
+example/ios/Flutter/flutter_export_environment.sh
+example/ios/Flutter/App.framework
+example/ios/Flutter/Flutter.framework
+example/ios/Flutter/Flutter.podspec
+example/ios/Flutter/ephemeral/
+example/ios/Flutter/app.flx
+example/ios/Flutter/app.zip
+example/ios/Flutter/flutter_assets/
+example/ios/ServiceDefinitions.json
+example/ios/Runner/GeneratedPluginRegistrant.*
+example/ios/Pods/
+example/ios/Podfile.lock
+
+# Android Generated Files
+example/android/.gradle/
+example/android/app/build/
+example/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+example/android/gradle/wrapper/gradle-wrapper.jar
+example/android/gradlew
+example/android/gradlew.bat
+example/android/local.properties
+example/android/.cxx/
+example/android/key.properties
+*.jks
+!example/android/app/debug.keystore
+
+# macOS Generated Files
+example/macos/Flutter/GeneratedPluginRegistrant.swift
+example/macos/Flutter/ephemeral/
+example/macos/Flutter/Flutter-Generated.xcconfig
+example/macos/Flutter/flutter_export_environment.sh
+
+# Linux Generated Files
+example/linux/flutter/ephemeral/
+
+# Windows Generated Files
+example/windows/flutter/ephemeral/
+
+# ===========================================
+# Android
+# ===========================================
+*.apk
+*.aab
+*.dex
+*.class
+bin/
+gen/
+out/
+.gradle/
+*.hprof
+*.keystore
+!debug.keystore
+
+# ===========================================
+# iOS/XCode
+# ===========================================
+*.ipa
+*.dSYM.zip
+*.dSYM
+DerivedData/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+*.xcuserstate
+
+# iOS Flutter (recursive for nested directories)
+**/ios/.generated/
+**/ios/.symlinks/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# ===========================================
+# Test Files
+# ===========================================
+test/.test_coverage.dart
+test_driver/.test_coverage.dart
+
+# ===========================================
+# Documentation (local only)
+# ===========================================
+# Add any local documentation files that shouldn't be committed
+# *.md (uncomment if you want to ignore all markdown files)
+
+# ===========================================
+# Temporary Files
+# ===========================================
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# ===========================================
+# Exceptions (files that should be tracked)
+# ===========================================
+# Keep example app source files
+!example/lib/**/*.dart
+!example/lib/**/*.yaml
+!example/lib/**/*.json
+!example/assets/**/*
+!example/pubspec.yaml
+!example/README.md
+
+# Keep example app configuration (but not generated)
+!example/android/app/src/main/AndroidManifest.xml
+!example/android/app/src/main/kotlin/**/*.kt
+!example/android/app/build.gradle.kts
+!example/android/build.gradle.kts
+!example/android/settings.gradle.kts
+!example/ios/Runner/Info.plist
+!example/ios/Runner/Runner.entitlements
+!example/ios/Podfile
+

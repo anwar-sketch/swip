@@ -1,0 +1,113 @@
+{
+  "model_id": "extratrees_chest_ecg_w60s5_v1_0",
+  "format": "onnx",
+  "window_config": {
+    "window_size_sec": 60,
+    "window_step_sec": 5
+  },
+  "schema": {
+    "input_names": [
+      "RMSSD",
+      "Mean_RR",
+      "HRV_SDNN",
+      "pNN50",
+      "HRV_HF",
+      "HRV_LF",
+      "HRV_HF_nu",
+      "HRV_LF_nu",
+      "HRV_LFHF",
+      "HRV_TP",
+      "HRV_SD1SD2",
+      "HRV_Sampen",
+      "HRV_DFA_alpha1",
+      "HR"
+    ],
+    "input_units": [
+      "ms",
+      "ms",
+      "ms",
+      "ms",
+      "ms\u00b2",
+      "ms\u00b2",
+      "ms\u00b2",
+      "ms\u00b2",
+      "ms\u00b2",
+      "ms\u00b2",
+      "ratio",
+      "entropy",
+      "alpha",
+      "bpm"
+    ],
+    "order_fixed": true,
+    "normalization": {
+      "type": "standard_scaler",
+      "mean": [
+        53.861153341839426,
+        808.1835116469779,
+        71.3437346826001,
+        24.14583058504445,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        77.18696133159784
+      ],
+      "std": [
+        37.32030408298797,
+        149.36468593019433,
+        31.07878744618848,
+        19.714167635319715,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        16.66748446942223
+      ],
+      "note": "Normalization included in the ONNX model pipeline"
+    }
+  },
+  "output": {
+    "type": "probability",
+    "range": [
+      0.0,
+      1.0
+    ],
+    "class_names": [
+      "Baseline",
+      "Stress",
+      "Amusement"
+    ],
+    "class_indices": [
+      0,
+      1,
+      2
+    ],
+    "positive_class": "Stress"
+  },
+  "quantization": {
+    "enabled": false,
+    "dtype": "float32"
+  },
+  "performance": {
+    "loso_cv_accuracy": 0.5651021953065859,
+    "loso_cv_f1_macro": 0.47729348298974966
+  },
+  "training_data_tag": "wesad_chest_ecg_3class",
+  "created_utc": "2025-12-23T10:34:37.868450Z",
+  "license": "Apache-2.0",
+  "notes": "ONNX model with built-in StandardScaler normalization. Trained on WESAD chest ECG with 60s windows and 5s steps.",
+  "checksum": {
+    "algo": "sha256",
+    "value": "f9ba42cbefe3b6cfc76431f2e6aeee0cf7c8a85a0e367a04a3bce85f000f58d3"
+  }
+}
